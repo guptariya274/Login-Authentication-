@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - Authentication System{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-user"></i> User Profile</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-user-circle fa-8x text-primary"></i>
+                        </div>
+                        <h5>{{ current_user.username }}</h5>
+                        <p class="text-muted">Member since {{ current_user.created_at.strftime('%B %Y') if current_user.created_at else 'N/A' }}</p>
+                    </div>
+                    <div class="col-md-8">
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label"><i class="fas fa-user"></i> Username</label>
+                                <input type="text" class="form-control" value="{{ current_user.username }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label"><i class="fas fa-envelope"></i> Email Address</label>
+                                <input type="email" class="form-control" value="{{ current_user.email }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label"><i class="fas fa-calendar"></i> Account Created</label>
+                                <input type="text" class="form-control" value="{{ current_user.created_at.strftime('%Y-%m-%d %H:%M:%S') if current_user.created_at else 'N/A' }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label"><i class="fas fa-id-badge"></i> User ID</label>
+                                <input type="text" class="form-control" value="#{{ current_user.id }}" readonly>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-cogs"></i> Account Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('change_password') }}" class="btn btn-warning">
+                        <i class="fas fa-key"></i> Change Password
+                    </a>
+                    <a href="{{ url_for('protected') }}" class="btn btn-primary">
+                        <i class="fas fa-home"></i> Back to Dashboard
+                    </a>
+                    <a href="{{ url_for('logout') }}" class="btn btn-danger">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5><i class="fas fa-shield-alt"></i> Security Status</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span>Account Status</span>
+                        <span class="badge bg-success">Active</span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span>Email Verified</span>
+                        <span class="badge bg-info">Yes</span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span>Last Login</span>
+                        <span class="badge bg-secondary">Today</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

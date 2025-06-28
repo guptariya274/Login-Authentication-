@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - Authentication System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header text-center">
+                <h3><i class="fas fa-user-plus"></i> Create Account</h3>
+                <p class="text-muted">Join our secure authentication system</p>
+            </div>
+            <div class="card-body">
+                <form method="post" id="registerForm">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">
+                            <i class="fas fa-user"></i> Username
+                        </label>
+                        <input type="text" name="username" id="username" class="form-control" required 
+                               placeholder="Enter your username">
+                        <div class="form-text">Username must be unique and at least 3 characters long.</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">
+                            <i class="fas fa-envelope"></i> Email Address
+                        </label>
+                        <input type="email" name="email" id="email" class="form-control" required 
+                               placeholder="Enter your email address">
+                        <div class="form-text">We'll never share your email with anyone else.</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">
+                            <i class="fas fa-lock"></i> Password
+                        </label>
+                        <input type="password" name="password" id="password" class="form-control" required 
+                               placeholder="Enter your password" onkeyup="checkPasswordStrength()">
+                        <div class="progress mt-2" style="height: 5px;">
+                            <div id="passwordStrength" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                        </div>
+                        <div id="passwordRequirements" class="form-text mt-2">
+                            <small>
+                                <div id="length" class="text-danger"><i class="fas fa-times"></i> At least 6 characters</div>
+                                <div id="uppercase" class="text-danger"><i class="fas fa-times"></i> One uppercase letter</div>
+                                <div id="lowercase" class="text-danger"><i class="fas fa-times"></i> One lowercase letter</div>
+                                <div id="number" class="text-danger"><i class="fas fa-times"></i> One number</div>
+                            </small>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="confirm_password" class="form-label">
+                            <i class="fas fa-lock"></i> Confirm Password
+                        </label>
+                        <input type="password" name="confirm_password" id="confirm_password" class="form-control" required 
+                               placeholder="Confirm your password" onkeyup="checkPasswordMatch()">
+                        <div id="passwordMatch" class="form-text"></div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-user-plus"></i> Create Account
+                        </button>
+                    </div>
+                </form>
+                
+                <hr class="my-4">
+                
+                <div class="text-center">
+                    <p class="mb-0">Already have an account? 
+                        <a href="{{ url_for('login') }}" class="text-decoration-none">
+                            <i class="fas fa-sign-in-alt"></i> Sign In
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function checkPasswordStrength() {
+    const password = document.getElementById('password').value;
+    const strengthBar = document.getElementById('passwordStrength');
+    const requirements = {
+        length: password.length >= 6,
+        uppercase: /[A-Z]/.test(password),
+        lowercase: /[a-z]/.test(password),
+        number: /\d/.test(password)
+    };
+    
+    let strength = 0;
+    Object.values(requirements).forEach(met => {
+        if (met) strength += 25;
+    });
+    
+    strengthBar.style.width = strength + '%';
+    
+    if (strength <= 25) {
+        strengthBar.className = 'progress-bar bg-danger';
+    } else if (strength <= 50) {
+        strengthBar.className = 'progress-bar bg-warning';
+    } else if (strength <= 75) {
+        strengthBar.className = 'progress-bar bg-info';
+    } else {
+        strengthBar.className = 'progress-bar bg-success';
+    }
+    
+    // Update requirement indicators
+    document.getElementById('length').innerHTML = 
+        `<i class="fas fa-${requirements.length ? 'check' : 'times'}"></i> At least 6 characters`;
+    document.getElementById('length').className = requirements.length ? 'text-success' : 'text-danger';
+    
+    document.getElementById('uppercase').innerHTML = 
+        `<i class="fas fa-${requirements.uppercase ? 'check' : 'times'}"></i> One uppercase letter`;
+    document.getElementById('uppercase').className = requirements.uppercase ? 'text-success' : 'text-danger';
+    
+    document.getElementById('lowercase').innerHTML = 
+        `<i class="fas fa-${requirements.lowercase ? 'check' : 'times'}"></i> One lowercase letter`;
+    document.getElementById('lowercase').className = requirements.lowercase ? 'text-success' : 'text-danger';
+    
+    document.getElementById('number').innerHTML = 
+        `<i class="fas fa-${requirements.number ? 'check' : 'times'}"></i> One number`;
+    document.getElementById('number').className = requirements.number ? 'text-success' : 'text-danger';
+}
+
+function checkPasswordMatch() {
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirm_password').value;
+    const matchDiv = document.getElementById('passwordMatch');
+    
+    if (confirmPassword === '') {
+        matchDiv.innerHTML = '';
+        matchDiv.className = 'form-text';
+    } else if (password === confirmPassword) {
+        matchDiv.innerHTML = '<i class="fas fa-check text-success"></i> Passwords match';
+        matchDiv.className = 'form-text text-success';
+    } else {
+        matchDiv.innerHTML = '<i class="fas fa-times text-danger"></i> Passwords do not match';
+        matchDiv.className = 'form-text text-danger';
+    }
+}
+</script>
+{% endblock %} 

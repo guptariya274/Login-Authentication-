@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome - Authentication System{% endblock %}
+
+{% block content %}
+<div class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 mb-4">
+            <i class="fas fa-shield-alt"></i> Secure Authentication System
+        </h1>
+        <p class="lead mb-4">A modern, secure, and user-friendly authentication system built with Flask</p>
+        {% if current_user.is_authenticated %}
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{{ url_for('protected') }}" class="btn btn-light btn-lg">
+                    <i class="fas fa-home"></i> Go to Dashboard
+                </a>
+                <a href="{{ url_for('profile') }}" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-user"></i> View Profile
+                </a>
+            </div>
+        {% else %}
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{{ url_for('register') }}" class="btn btn-light btn-lg">
+                    <i class="fas fa-user-plus"></i> Get Started
+                </a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-4 text-center mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <i class="fas fa-lock fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">Secure Authentication</h5>
+                <p class="card-text">Password hashing, session management, and secure login/logout functionality.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 text-center mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <i class="fas fa-user-check fa-3x text-success mb-3"></i>
+                <h5 class="card-title">User Management</h5>
+                <p class="card-text">Register new accounts, manage profiles, and change passwords securely.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 text-center mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <i class="fas fa-shield-alt fa-3x text-warning mb-3"></i>
+                <h5 class="card-title">Protected Routes</h5>
+                <p class="card-text">Access control with login-required decorators and session validation.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if not current_user.is_authenticated %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-user-plus"></i> New User?</h5>
+            </div>
+            <div class="card-body">
+                <p>Create a new account to access all features:</p>
+                <ul>
+                    <li>Secure password validation</li>
+                    <li>Email verification</li>
+                    <li>Profile management</li>
+                    <li>Protected content access</li>
+                </ul>
+                <a href="{{ url_for('register') }}" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i> Register Now
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-sign-in-alt"></i> Returning User?</h5>
+            </div>
+            <div class="card-body">
+                <p>Welcome back! Sign in to your account:</p>
+                <ul>
+                    <li>Remember me functionality</li>
+                    <li>Secure session management</li>
+                    <li>Quick access to dashboard</li>
+                    <li>Profile customization</li>
+                </ul>
+                <a href="{{ url_for('login') }}" class="btn btn-success">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %} 
